@@ -10,7 +10,7 @@ require './mskmail'
 require './mskconfig'
 require './mskinnosuke'
 
-class Sinsei
+class ZangyoOver
   def initialize(config_path)
     @config = MSKinnosuke::Config.new(config_path)
     @mail = MSKinnosuke::MailSender.new(@config)
@@ -75,7 +75,7 @@ end
 
 def main(argv)
   config_path =  File.join( File.dirname(__FILE__), "./kinnosuke.conf" )
-  k = Sinsei.new(config_path)
+  k = ZangyoOver.new(config_path)
   k.check
 end
 

@@ -1,7 +1,5 @@
 # coding: utf-8
 
-# ruby 2.0 のみ ( ruby 2.2 は nokogiri が未対応 )
-
 require 'mechanize'
 require 'mail'
 require 'pp'
@@ -11,7 +9,7 @@ require './mskmail'
 require './mskconfig'
 require './mskinnosuke'
 
-class Sinsei
+class ZangyoTotal
   def initialize(config_path)
     @config = MSKinnosuke::Config.new(config_path)
     @mail = MSKinnosuke::MailSender.new(@config)
@@ -96,7 +94,7 @@ end
 
 def main(argv)
   config_path =  File.join( File.dirname(__FILE__), "./kinnosuke.conf" )
-  k = Sinsei.new(config_path)
+  k = ZangyoTotal.new(config_path)
   k.check
 end
 
