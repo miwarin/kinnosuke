@@ -109,21 +109,6 @@ class Sinsei
     @mail.send('勤怠 退社が残業申請を超過', body)
   end
   
-  def summer_time?(a_date)
-    s = Time.parse("07/07")
-    e = Time.parse("09/26")
-    return (a_date >= s) && (a_date <= e)
-  end
-  
-  # 定時から10分以内に退勤したか？
-  def get_overtime_start(a_date)
-    if summer_time?(a_date)
-      return "16:25"
-    else
-      return "17:40"
-    end
-  end
-  
   def page_get(employee_number)
     agent = @kinn.login()
     uri = "https://www.4628.jp/?module=acceptation&action=browse_timesheet&appl_id=#{employee_number}"
@@ -150,7 +135,7 @@ class Sinsei
       y = tt.year
       m = tt.mon
       a_date = Time.new(y, m, day)
-      t2 = Time.parse( get_overtime_start( a_date ) )
+      t2 = Time.parse( @kinn.get_overtime_start( a_date ) )
       
       # 退社が 残業申請時間前ならチェックせず
       next if t1 < t2

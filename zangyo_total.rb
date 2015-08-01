@@ -102,7 +102,7 @@ class Sinsei
     }
     
     plot( all_hougai )
-    @mail.send( '残業時間合計', 'グラフ', @graph_file )
+    #@mail.send( '残業時間合計', 'グラフ', @graph_file )
   end
   
   def page_get(employee_number)
@@ -118,7 +118,11 @@ class Sinsei
     total = 0
 
     doc = Nokogiri::HTML.parse(page_body)
-    doc.root.xpath("//tr[starts-with(@id, 'fix_2_')]").each {|tr|
+    
+    fixnum = 0
+    fixnum = 2 if Time.new.mon == 7
+    
+    doc.root.xpath("//tr[starts-with(@id, 'fix_#{fixnum}_')]").each {|tr|
       day = tr.children[1].text
 #      hougai = tr.children[26].text.gsub(/\s+/, '').delete("\xC2\xA0")
       hougai = tr.children[27].text.gsub(/\s+/, '')

@@ -22,5 +22,20 @@ module MSKinnosuke
       }
       return agent
     end
+    
+    def summer_time?(a_date)
+      s = Time.parse("07/07")
+      e = Time.parse("09/26")
+      return (a_date >= s) && (a_date <= e)
+    end
+  
+    # 定時から10分以内に退勤したか？
+    def get_overtime_start(a_date)
+      if summer_time?(a_date)
+        return "16:25"
+      else
+        return "17:10"
+      end
+    end
   end
 end
