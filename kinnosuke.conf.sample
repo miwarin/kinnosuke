@@ -5,8 +5,8 @@ Config = {
   :prof_login => 'ログインID',
   :prof_password => 'パスワード',
 
-  :mail_from => 'miwa_ssm@msoft.co.jp',
-  :mail_to => 'miwa_ssm@msoft.co.jp',
+  :mail_from => 'user@example.co.jp',
+  :mail_to => 'user@example.co.jp',
 
   :mail_server_address => 'smtp.example.co.jp',
   :mail_server_port => 25,
