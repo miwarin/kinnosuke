@@ -102,7 +102,7 @@ class Sinsei
     }
     
     plot( all_hougai )
-    #@mail.send( '残業時間合計', 'グラフ', @graph_file )
+    @mail.send( '残業時間合計', 'グラフ', @graph_file )
   end
   
   def page_get(employee_number)
