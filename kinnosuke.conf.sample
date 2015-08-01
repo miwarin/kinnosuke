@@ -1,0 +1,26 @@
+# coding: utf-8
+# -*- mode: ruby -*-
+Config = {
+  :prof_company => 'hogehoge',
+  :prof_login => 'ログインID',
+  :prof_password => 'パスワード',
+
+  :mail_from => 'miwa_ssm@msoft.co.jp',
+  :mail_to => 'miwa_ssm@msoft.co.jp',
+
+  :mail_server_address => 'smtp.example.co.jp',
+  :mail_server_port => 25,
+  :mail_server_domain => 'example.co.jp',
+  :mail_server_user_name => 'user',
+  :mail_server_password => 'パスワード',
+
+  :members => [
+    "苗字 名前",
+    "苗字 名前",
+  ],
+
+  :riyuu_members => {
+    "苗字" => 77777,
+    "苗字" => 99999,
+  }
+}
