@@ -74,7 +74,11 @@ class ZangyoOver
 end
 
 def main(argv)
-  config_path =  File.join( File.dirname(__FILE__), "./kinnosuke.conf" )
+  if argv.length == 1
+    config_path = argv.shift
+  else
+    config_path =  File.join( File.dirname(__FILE__), "./kinnosuke.conf" )
+  end
   k = ZangyoOver.new(config_path)
   k.check
 end
