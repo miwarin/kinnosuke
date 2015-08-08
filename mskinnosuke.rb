@@ -67,6 +67,26 @@ td[38] <td nowrapid="browse_td_delete_2014714"><br></td>
 td[39]
 td[40] <td nowrapid="browse_td_inkan_2014714"><br></td>
 td[41]
+
+
+
+Mechanize::Form::Buttons のテキストの変化。押したボタンの状態により buttons の数も変わる( ボタンを押すとそいつはボタンではなく text に変化するため )
+
+何も押されていない
+"出社"
+"退社"
+"外出"
+"戻り"
+
+出社を押した
+"退社"
+"外出"
+"戻り"
+
+出社を押したあとに退社を押した
+"外出"
+"戻り"
+
 =end
 
 require 'mechanize'
