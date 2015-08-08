@@ -17,13 +17,15 @@ class Sinsei
   end
   
   def check
+    return unless @kinn.working?
     
     no_reason_members = ""
     
     @config.riyuu_members.each {|name, number|
-      page_body = page_get(number)
-      page_body = NKF.nkf('-w', page_body)
-      reason = page_scan(page_body)
+      # 社員ごとの出勤簿
+      uri = "https://www.4628.jp/?module=acceptation&action=browse_timesheet&appl_id=#{number}"
+      @kinn.agent.get(uri)
+      reason = page_scan(@kinn.agent.page.body)
       next if reason.empty?
       no_reason_members << "#{name} #{reason.join(" ")}\n"
     }
@@ -35,21 +37,6 @@ class Sinsei
     puts body
     
     @mail.send('勤怠 休暇理由 未記入', body)
-  end
-  
-
-  def page_get(employee_number)
-    agent = @kinn.login()
-
-    # 社員ごとの出勤簿
-    uri = "https://www.4628.jp/?module=acceptation&action=browse_timesheet&appl_id=#{employee_number}"
-    agent.get(uri)
-    
-    # 隠されているだけなので javascript をがんばったり form を取得したりする必要もない
-    #agent.page.link_with(:href => /javascript:switch_tab\(2, 3, 0\)/).click
-    #form = agent.page.form_with(:name => 'submit_form2')
-    
-    return agent.page.body
   end
 
   def page_scan(page_body)

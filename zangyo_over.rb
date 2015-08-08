@@ -18,13 +18,13 @@ class ZangyoOver
   end
   
   def check
-    
+    return unless @kinn.working?
+
     no_reason_members = ""
-    
     @config.riyuu_members.each {|name, number|
-      page_body = page_get(number)
-      page_body = NKF.nkf('-w', page_body)
-      reason = page_scan(page_body)
+      uri = "https://www.4628.jp/?module=acceptation&action=browse_timesheet&appl_id=#{number}"
+      @kinn.agent.get(uri)
+      reason = page_scan(@kinn.agent.page.body)
       next if reason.empty?
       no_reason_members << "#{name} #{reason.join(" ")}\n"
     }
@@ -38,13 +38,6 @@ class ZangyoOver
     @mail.send('勤怠 退社が残業申請を超過', body)
   end
   
-  def page_get(employee_number)
-    agent = @kinn.login()
-    uri = "https://www.4628.jp/?module=acceptation&action=browse_timesheet&appl_id=#{employee_number}"
-    agent.get(uri)
-    return agent.page.body
-  end
-
   def page_scan(page_body)
     no_reason ||= []
     @kinn.get_record(page_body).each {|tr|

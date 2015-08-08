@@ -75,21 +75,24 @@ module MSKinnosuke
   class Kinnosuke
     def initialize(config)
       @config = config
+      @agent = Mechanize.new
+      login
     end
     
     def login
-      agent = Mechanize.new
-      
       # ログイン
-      agent.get('https://www.4628.jp/')
-      agent.page.form_with(:id => 'form1'){|f|
+      @agent.get('https://www.4628.jp/')
+      @agent.page.form_with(:id => 'form1'){|f|
         f.field_with( :name => 'y_companycd' ).value = @config.prof_company
         f.field_with( :name => 'y_logincd' ).value = @config.prof_login
         f.field_with( :name => 'password' ).value = @config.prof_password
         f.checkboxes[ 0 ].check
         f.click_button
       }
-      return agent
+    end
+    
+    def agent
+      return @agent
     end
     
     def summer_time?(a_date)
@@ -113,5 +116,20 @@ module MSKinnosuke
       Nokogiri::HTML.parse(page_body).root.xpath("//tr[starts-with(@id, 'fix_#{fixnum}_')]")
     end
     
+    def working?
+      texts = ""
+      buttons = @agent.page.forms[1].buttons
+      if buttons.length == 3
+        buttons.each {|b|
+          texts << b.node.children[0].text
+        }
+        if !texts.include?("出社") and texts.include?("退社")
+          puts "working"
+          return true
+        end
+      end
+      puts "a holiday"
+      return false
+    end
   end
 end

@@ -18,32 +18,26 @@ class ZangyoTotal
   end
   
   def check
+    return unless @kinn.working?
+
     all_hougai ||= {}
-    no_reason_members = ""
     
     @config.riyuu_members.each {|name, number|
-      page_body = page_get(number)
-      all_hougai[name] = page_scan(page_body)
+      uri = "https://www.4628.jp/?module=acceptation&action=browse_timesheet&appl_id=#{number}"
+      @kinn.agent.get(uri)
+      all_hougai[name] = page_scan(@kinn.agent.page.body)
     }
     
     plot( all_hougai )
     @mail.send( '残業時間合計', 'グラフ', @graph_file )
   end
   
-  def page_get(employee_number)
-    agent = @kinn.login()
-    uri = "https://www.4628.jp/?module=acceptation&action=browse_timesheet&appl_id=#{employee_number}"
-    agent.get(uri)
-    return agent.page.body
-  end
-
   def page_scan(page_body)
 
     totals = []
     total = 0
 
     @kinn.get_record(page_body).each {|tr|
-      day = tr.children[1].text
       hougai = tr.children[27].text.gsub(/\s+/, '')
 
       ten = 0
