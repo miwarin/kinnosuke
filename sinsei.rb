@@ -28,7 +28,7 @@ class Sinsei
       form.click_button
     }
     
-    unapproved = search_unapproved(page.body, @config.members)
+    unapproved = search_unapproved(NKF.nkf('-w', page.body), @config.members)
     if unapproved.length == 0
       return
     end
