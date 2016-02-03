@@ -21,14 +21,14 @@ class Sinsei
 
     # 申請決済ページ
     page = @kinn.agent.get('https://www.4628.jp/?module=acceptation&action=acceptation')
-    
+    unapproved_page = ""
     # [未承認] を選択して [検索] をクリック
     page.form_with(:id => "search_form") {|form|
       form['search_acceptation_status'] = '2'
-      form.click_button
+      unapproved_page = form.click_button()
     }
     
-    unapproved = search_unapproved(NKF.nkf('-w', page.body), @config.members)
+    unapproved = search_unapproved(NKF.nkf('-w', unapproved_page.body), @config.members)
     if unapproved.length == 0
       return
     end
@@ -65,4 +65,3 @@ def main(argv)
 end
 
 main(ARGV)
-
